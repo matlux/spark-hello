@@ -27,20 +27,7 @@ yarn application -kill <application ID>
 
 To execute the local driver:
 
-```
-spark-submit --master yarn-client --class SimpleApp --verbose --conf spark.driver.userClassPathFirst=true ./simple-project-shaded.jar
-```
-
-To execute the driver through YARN
 
 ```
-spark-submit --master yarn-client --class SimpleApp --verbose --conf spark.driver.userClassPathFirst=true ./simple-project-shaded.jar
-```
-
-## How to include HBase configuration
-
-HBase configuration is automatically taken from the Java classpath: just add /etc/hbase/conf as driver-class-path on Spark
-
-```
-spark-submit --master yarn-client --class SimpleApp --driver-class-path "/etc/hbase/conf:/etc/hadoop/conf" --verbose --conf spark.driver.userClassPathFirst=false target/scala-2.10/simple-project-shaded.jar
+spark-submit --master yarn-client --class SimpleApp --driver-class-path "/etc/hbase/conf:/etc/hadoop/conf:$(hbase classpath | tr ':' '\n' | grep htrace-core-3.1.0-incubating.jar)" --verbose --conf spark.driver.userClassPathFirst=false target/scala-2.10/simple-project-shaded.jar
 ```
